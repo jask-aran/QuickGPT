@@ -6,7 +6,7 @@ In rough order of targeted completion
 
 ~~API call to chatGPT~~
 
-~~Inline call from terminal with no flags returning answer limited to ~50 words~~
+~~Inline call from terminal with no flags returning answer limited to around 50 words~~
 - Allow for successive inline calls from terminal to continue a conversation, allowing for answers between other work in the terminal. This requires storing conversation history between script executions, probably in JSON
 - Terminal arguments to allow adjusted output parameters
     - E.g. -v verbose (unlimited length) return
