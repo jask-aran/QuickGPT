@@ -18,4 +18,4 @@ In rough order of targeted completion
 
 ### Completed
 ~~-API call to chatGPT~~
-- API calls to GPT-3.5-Turbo, the model powering chatGPT are made with input prompts and a system context statement that commands the model to give concise answers that are limited to 50 words.
+- API calls to GPT-3.5-Turbo, the model powering chatGPT are made with input prompts and a system context statement that commands the model to give concise answers that are limited to 50 words, which are returned to the terminal.
