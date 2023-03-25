@@ -3,8 +3,9 @@ Access Chat GPT directly from the terminal.
 - Focused on, and will default to providing short answers for simple questions
 ### Roadmap
 In rough order of targeted completion
-- API call to chatGPT 
-- Inline call from terminal with no flags returning answer limited to ~50 words
+~~API call to chatGPT~~
+~~Inline call from terminal with no flags returning answer limited to ~50 words~~
+- Allow for successive inline calls from terminal to continue a conversation, allowing for answers between other work in the terminal. This requires storing conversation history between script executions, probably in JSON
 - Terminal arguments to allow adjusted output parameters
     - E.g. -v verbose (unlimited length) return
     - Pre tuned context prompts e.g. "Do not explain"
@@ -17,5 +18,5 @@ In rough order of targeted completion
         - Provide a preview of code snippet before appending
 
 ### Completed
-~~-API call to chatGPT~~
 - API calls to GPT-3.5-Turbo, the model powering chatGPT are made with input prompts and a system context statement that commands the model to give concise answers that are limited to 50 words, which are returned to the terminal.
+- Added both an inline terminal mode, and a conversatoinal mode that is not restricted t0 50 word responses in a continous conversational mode.
