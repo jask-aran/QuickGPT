@@ -7,8 +7,9 @@ In rough order of targeted completion
 - Terminal arguments to allow adjusted output parameters
     - E.g. -v verbose (unlimited length) return
     - Pre tuned context prompts e.g. "Do not explain"
+- Installer that compiles python script as a binary and adds it to environment, allowing it to be called from anywhere in the system
 - Take text files as input, or output
-- Allow expanded/ continous interactoin, either through successive inline terminal calls or in an interative mode, to allow contigous conversations
+- Allow expanded/ continous interaction, either through successive inline terminal calls or in an interative mode, to allow contigous conversations
 - Take code files as input context, and answer prompt questions
     - define a function of an input code file to be specifically analysed, instead of the whole file to improve performance (may not be neccesary)
     - Use a prompt to generate a function or other code snippet that is appended to a code file
