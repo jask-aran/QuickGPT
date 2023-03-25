@@ -3,6 +3,7 @@ Access Chat GPT directly from the terminal.
 - Focused on, and will default to providing short answers for simple questions
 ### Roadmap
 In rough order of targeted completion
+- API call to chatGPT 
 - Inline call from terminal with no flags returning answer limited to ~50 words
 - Terminal arguments to allow adjusted output parameters
     - E.g. -v verbose (unlimited length) return
