@@ -7,4 +7,4 @@ with open("data.json", "w") as f:
     json.dump(data, f)
 
 with open('data.json', 'r') as r:
-    print(json.load(r))
+    print(type(json.load(r)))

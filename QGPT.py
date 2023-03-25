@@ -1,6 +1,7 @@
 import requests
 import yaml
 import argparse
+import json
 
 def config_load():
     with open('config.yml') as file:
@@ -25,7 +26,7 @@ def get_completion(config, messages):
         headers=headers, 
         json=body
         ).json()
-    # print(messages)
+
     return response["choices"][0]["message"]
 
 
@@ -44,15 +45,20 @@ def conversation(config, messages):
         
 def main():
     #Create Parser
-    parser = argparse.ArgumentParser(description="Chat GPT CLI access")
-    parser.add_argument('-c', '--conversation', action="store_true", help="Enter conversational mode with the entered prompt")
+    parser = argparse.ArgumentParser(description="Chat GPT CLI tool")
+    
+    # Mutually exclusive options; memory mode enable/ disable or enter conversational mode
+    interaction_mode_group = parser.add_mutually_exclusive_group()
+    interaction_mode_group.add_argument('-c', '--conversation', action="store_true", help="Enter conversational mode with the entered prompt")
+    interaction_mode_group.add_argument('-m', '--memory', action="store_true", help="Enable/ Disable memory mode to store conversation between inline calls. Call flag again to disable this mode.")
+    
+    # Positional argument for 
     parser.add_argument('Prompt', type=str, nargs='+', help='Prompt Text', default="")
-
     args = parser.parse_args()
+    
     prompt = " ".join(args.Prompt)
-    
-    
     config = config_load()
+    
     initialised_message = [
         {"role": "system", "content": config['quick_context']},
         {"role": "user", "content": prompt}
@@ -62,8 +68,14 @@ def main():
         initialised_message[0]['content'] = config['verbose_context']
         print('Conversational Mode. Enter "/q" to exit')
         conversation(config, initialised_message)
+    elif args.memory:
+        print("Memory Cleared")
+        with open('history.json', 'w') as history:
+            json.dump([], history)
+        
     else:
-        print(get_completion(config, initialised_message)["content"])
+        output = get_completion(config, initialised_message)        
+        print(output['content'])
     
 
     

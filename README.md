@@ -19,6 +19,8 @@ In rough order of targeted completion
     - Use a prompt to generate a function or other code snippet that is appended to a code file
         - Provide a preview of code snippet before appending
 
+- Integrate with Windows PowerToys Run, to allow for quick searches directly from a floating (called with win + space) search bar
+
 ### Completed
 - API calls to GPT-3.5-Turbo, the model powering chatGPT are made with input prompts and a system context statement that commands the model to give concise answers that are limited to 50 words, which are returned to the terminal.
 - Added both an inline terminal mode, and a conversational mode that is not restricted t0 50 word responses in a continous conversational mode.
