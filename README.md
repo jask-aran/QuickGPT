@@ -1,2 +1,5 @@
 # QuickGPT
-CLI GPT implementation focused on providing quick gpt answers inline in the terminal
+Access Chat GPT directly from the terminal.
+- Focused on, and will default to providing short answers for simple questions
+
+
