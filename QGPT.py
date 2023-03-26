@@ -2,6 +2,7 @@ import requests
 import yaml
 import argparse
 import json
+import sys
 
 
 def config_load():
@@ -26,24 +27,6 @@ def get_completion(config, messages):
         "messages": messages,
     }
 
-    response = {
-        "id": "chatcmpl-6xxbLHmF9H4prvSmsYUuUc0wgfkCS",
-        "object": "chat.completion",
-        "created": 1679748479,
-        "model": "gpt-3.5-turbo-0301",
-        "usage": {"prompt_tokens": 12, "completion_tokens": 21, "total_tokens": 33},
-        "choices": [
-            {
-                "message": {
-                    "role": "assistant",
-                    "content": "As an AI language model, I don't have a name, but you can call me OpenAI.",
-                },
-                "finish_reason": "stop",
-                "index": 0,
-            }
-        ],
-    }
-
     response = requests.post(
         "https://api.openai.com/v1/chat/completions",
         headers=headers,
@@ -54,19 +37,42 @@ def get_completion(config, messages):
 
 
 def conversation(config, messages):
+    print('Conversational Mode. Enter "/q" to exit.')
+    output = get_completion(config, messages)
+    messages.append(output)
+    print(output["content"])
+    prompt = input("> ")
     while True:
-        output = get_completion(config, messages)
-        messages.append(output)
-        # print(messages)
-        print(output["content"])
-        prompt = input("> ")
         if prompt == "/q":
-            break
-        messages.append({"role": "user", "content": prompt})
+            sys.exit(0)
+        elif prompt == "/s":
+            print("Saving most recent message from the LLM to message.txt")
+            recent = messages[-1]["content"]
+            with open("message.txt", "w") as file:
+                file.write(recent)
+            prompt = input("> ")
+        elif prompt == "/d":
+            print("Dumping message history from the LLM to history.json")
+            messages.append(
+                {"role": "user", "content": "Commanded to dump history and exit"}
+            )
+            with open("history.json", "w") as file:
+                json.dump(messages, file)
+            sys.exit(0)
+        else:
+            messages.append({"role": "user", "content": prompt})
+            output = get_completion(config, messages)
+            messages.append(output)
+            print(output["content"])
+            prompt = input("> ")
 
 
 def main():
     config = config_load()
+    if not config:
+        print("API key has not been provided, please update it in the config.yml file")
+        sys.exit(0)
+
     # Create Parser
     parser = argparse.ArgumentParser(description="Chat GPT CLI tool")
     parser.add_argument(
@@ -87,7 +93,6 @@ def main():
             {"role": "system", "content": config["verbose_context"]},
             {"role": "user", "content": prompt},
         ]
-        print('Conversational Mode. Enter "/q" to exit.')
         conversation(config, initialised_message)
     else:
         initialised_message = [
