@@ -95,6 +95,7 @@ def get_completion(config, messages):
         "Content-Type": "application/json",
         "Authorization": f"Bearer {config['api-key']}",
     }
+
     body = {
         "model": config["model"],
         "temperature": config["temperature"],
@@ -119,12 +120,14 @@ def conversation(config, messages):
     while True:
         if prompt == "/q":
             sys.exit(0)
+
         elif prompt == "/s":
             print("Saving most recent message from the LLM to message.txt")
             recent = messages[-1]["content"]
             with open("message.txt", "w") as file:
                 file.write(recent)
             prompt = input("> ")
+
         elif prompt == "/d":
             print("Dumping message history from the LLM to history.json")
             messages.append(
@@ -133,6 +136,7 @@ def conversation(config, messages):
             with open("history.json", "w") as file:
                 json.dump(messages, file)
             sys.exit(0)
+
         else:
             messages.append({"role": "user", "content": prompt})
             output = get_completion(config, messages)
@@ -146,7 +150,6 @@ def main():
 
     # Create Parser
     parser = argparse.ArgumentParser(description="Chat GPT CLI tool")
-
     parser.add_argument(
         "-c",
         "--conversation",
@@ -154,17 +157,21 @@ def main():
         help="Enter conversational mode with the entered prompt",
     )
     parser.add_argument(
-        "-s", "--settings", action="store_true", help="Adjust settings for config.yml"
+        "-s",
+        "--settings",
+        action="store_true",
+        help="Adjust settings for config.yml",
     )
-
-    # Positional argument for prompt
+    # Prompt, either passed to API call from model, or to settings adjustment if -s flag
     parser.add_argument("Prompt", type=str, nargs="+", help="Prompt Text", default="")
     args = parser.parse_args()
-
     prompt = " ".join(args.Prompt)
+
+    # Adjust settings using prompt provided
     if args.settings:
         config_adjust(prompt)
 
+    # Enter conversational mode, using the verbose_context from config
     elif args.conversation:
         initialised_message = [
             {"role": "system", "content": config["verbose_context"]},
@@ -172,6 +179,7 @@ def main():
         ]
         conversation(config, initialised_message)
 
+    # Return an inline response from the model, using the quick_context from config
     else:
         initialised_message = [
             {"role": "system", "content": config["quick_context"]},
