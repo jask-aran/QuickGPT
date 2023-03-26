@@ -43,18 +43,18 @@ def get_completion(config, messages):
             }
         ],
     }
-    # response = requests.post(
-    #     "https://api.openai.com/v1/chat/completions",
-    #     headers=headers,
-    #     json=body
-    #     ).json()
+
+    response = requests.post(
+        "https://api.openai.com/v1/chat/completions",
+        headers=headers,
+        json=body,
+    ).json()
 
     return response["choices"][0]["message"]
 
 
 def conversation(config, messages):
-    running = 1
-    while running == 1:
+    while True:
         output = get_completion(config, messages)
         messages.append(output)
         # print(messages)
@@ -84,17 +84,18 @@ def main():
         help="Enable/ Disable memory mode to store conversation between inline calls. Call flag again to disable this mode.",
     )
 
-    # Positional argument for
+    # Positional argument for prompt
     parser.add_argument("Prompt", type=str, nargs="+", help="Prompt Text", default="")
     args = parser.parse_args()
 
     prompt = " ".join(args.Prompt)
     config = config_load()
 
-    initialised_message = [
-        {"role": "system", "content": config["quick_context"]},
-        {"role": "user", "content": prompt},
-    ]
+    # print(initialised_message)
+
+    with open("history.json", "r") as history:
+        initialised_message = json.load(history)
+    initialised_message.append({"role": "user", "content": prompt})
 
     if args.conversation:
         initialised_message[0]["content"] = config["verbose_context"]
@@ -103,8 +104,10 @@ def main():
     elif args.memory:
         print("Memory Cleared")
         with open("history.json", "w") as history:
-            json.dump([], history)
-
+            json.dump(
+                [{"role": "system", "content": config["quick_context"]}],
+                history,
+            )
     else:
         output = get_completion(config, initialised_message)
         print(output["content"])
