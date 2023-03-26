@@ -4,6 +4,11 @@
 - Focused on, and will default to providing short answers for simple questions
 
 ![Example](https://github.com/jask-aran/QuickGPT/blob/main/example.gif)
+
+### Features
+
+
+
 ### Roadmap
 ~~API call to chatGPT~~
 
@@ -29,4 +34,4 @@ This was removed, it is uneccessary to have a successive conversation over multi
 - Adjust settings stored in config.yml file using '-s' flag from terminal
     - E.g. context message provided to model before response, such as "You are a helpful assistant"
 
-- Create api-key YAML file to safely store API KEY, if none exists (first time setup). This file is in .gitignore.
+- Create api-key YAML file to safely store OpenAI API KEY, if none exists (first time setup). This file is in .gitignore.
