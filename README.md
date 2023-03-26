@@ -1,18 +1,18 @@
 # QuickGPT
-Access Chat GPT directly from the terminal.
-- Focused on, and will default to providing short answers for simple questions
-### Roadmap
-In rough order of targeted completion
+- Access Chat GPT directly from the terminal.
 
+- Focused on, and will default to providing short answers for simple questions
+
+![Example](https://github.com/jask-aran/QuickGPT/blob/main/example.gif)
+### Roadmap
 ~~API call to chatGPT~~
 
 ~~Inline call from terminal with no flags returning answer limited to around 50 words~~
 ~~Allow for successive inline calls from terminal to continue a conversation, allowing for answers between other work in the terminal. This requires storing conversation history between script executions, probably in JSON~~ 
 
 This was removed, it is uneccessary to have a successive conversation over multiple terminal calls, as continued conversations generally benefit from long input and output lengths, which would significantly clutter the terminal and be hard to read. Instead extra functionality has been added to the conversational mode to allow saving of messages and dumping of whole message history to txt and json files respectively.
-- Terminal arguments to allow adjusted output parameters
-    - E.g. -v verbose (unlimited length) return
-    - Pre tuned context prompts e.g. "Do not explain"
+
+~~Terminal arguments to allow adjusted output parameters~~
 - Installer that compiles python script as a binary and adds it to environment, allowing it to be called from anywhere in the system
 - Take text files as input, or output
 
@@ -25,4 +25,8 @@ This was removed, it is uneccessary to have a successive conversation over multi
 
 ### Completed
 - API calls to GPT-3.5-Turbo, the model powering chatGPT are made with input prompts and a system context statement that commands the model to give concise answers that are limited to 50 words, which are returned to the terminal.
-- Added both an inline terminal mode, and a conversational mode that is not restricted t0 50 word responses in a continous conversational mode.
+- Added both an inline terminal mode, and a conversational mode that is not restricted to 50 word responses in a continous conversational mode.
+- Adjust settings stored in config.yml file using '-s' flag from terminal
+    - E.g. context message provided to model before response, such as "You are a helpful assistant"
+
+- Create api-key YAML file to safely store API KEY, if none exists (first time setup). This file is in .gitignore.
