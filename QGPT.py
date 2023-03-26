@@ -3,6 +3,7 @@ import yaml
 import argparse
 import json
 import sys
+import os
 
 
 def config_load():
@@ -12,8 +13,65 @@ def config_load():
             config["api-key"]
             == "Replace this string with your API key taken from your OpenAI account"
         ):
-            return False
+            print("API key has not yet been set, set it in the config.yml file")
+            sys.exit(0)
     return config
+
+
+def config_adjust(prompt):
+    with open("config.yml", "r") as file:
+        config = yaml.load(file, Loader=yaml.FullLoader)
+
+    if prompt.lower() == "model":
+        print(
+            "Available models: \ngpt-3.5-turbo (1)\ngpt-4 (2) ONLY IF YOUR OpenAI ACCOUNT AND THEREFORE API KEY HAS BEEN GRANTED ACCESS"
+        )
+        option = input("Enter a number option: ")
+        if option == str(1):
+            config["model"] = "gpt-3.5-turbo"
+            print(
+                "Model has been set to gpt-3.5-turbo for all future conversation calls"
+            )
+        elif option == str(2):
+            config["model"] = "gpt-4"
+            print("Model has been set to gpt-4 for all future conversation calls")
+        else:
+            print("Invalid")
+            sys.exit(0)
+
+    elif prompt.lower() == "temperature":
+        option = float(input("Enter a temperature for the model, between 0 and 2: "))
+        if 0 <= option <= 2:
+            print(
+                "Temperature is now "
+                + str(option)
+                + " for all future conversation calls"
+            )
+            config["temperature"] = option
+
+    elif prompt.lower() == "verbose_context":
+        print(
+            "Enter a contextual system message, used to define the behaviour of the model. This option adjusts context in conversational mode"
+        )
+        print("The (recomended) default is: You are a helpful assistant")
+        option = input("> ")
+        config["verbose_context"] = option
+
+    elif prompt.lower() == "quick_context":
+        print(
+            "Enter a contextual system message, used to define the behaviour of the model. This option adjusts context in inline/ normal mode"
+        )
+        print(
+            "It is recommended to include a direction to limit output to ~30-50 words in this prompt, to avoid cluttering the terminal and ensuring conciseness"
+        )
+        print(
+            "The (recommended) default is: You give concise, short answers to questions in ideally no more than 30 words, unless instructed to expand on your answer."
+        )
+        option = input("> ")
+        config["quick_context"] = option
+
+    with open("config.yml", "w") as file:
+        yaml.dump(config, file)
 
 
 def get_completion(config, messages):
@@ -69,17 +127,18 @@ def conversation(config, messages):
 
 def main():
     config = config_load()
-    if not config:
-        print("API key has not been provided, please update it in the config.yml file")
-        sys.exit(0)
 
     # Create Parser
     parser = argparse.ArgumentParser(description="Chat GPT CLI tool")
+
     parser.add_argument(
         "-c",
         "--conversation",
         action="store_true",
         help="Enter conversational mode with the entered prompt",
+    )
+    parser.add_argument(
+        "-s", "--settings", action="store_true", help="Adjust settings for config.yml"
     )
 
     # Positional argument for prompt
@@ -87,13 +146,16 @@ def main():
     args = parser.parse_args()
 
     prompt = " ".join(args.Prompt)
+    if args.settings:
+        config_adjust(prompt)
 
-    if args.conversation:
+    elif args.conversation:
         initialised_message = [
             {"role": "system", "content": config["verbose_context"]},
             {"role": "user", "content": prompt},
         ]
         conversation(config, initialised_message)
+
     else:
         initialised_message = [
             {"role": "system", "content": config["quick_context"]},
