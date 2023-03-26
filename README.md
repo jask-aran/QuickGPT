@@ -7,8 +7,9 @@ In rough order of targeted completion
 ~~API call to chatGPT~~
 
 ~~Inline call from terminal with no flags returning answer limited to around 50 words~~
-~~Allow for successive inline calls from terminal to continue a conversation, allowing for answers between other work in the terminal. This requires storing conversation history between script executions, probably in JSON~~ This was removed, it is uneccessary to have a successive conversation over multiple terminal calls, as continued conversations generally benefit from long input and output lengths, which would significantly clutter the terminal and be hard to read. Instead extra functionality has been added to the conversational mode to allow saving of messages and dumping of whole message history to txt and json files respectively.
+~~Allow for successive inline calls from terminal to continue a conversation, allowing for answers between other work in the terminal. This requires storing conversation history between script executions, probably in JSON~~ 
 
+This was removed, it is uneccessary to have a successive conversation over multiple terminal calls, as continued conversations generally benefit from long input and output lengths, which would significantly clutter the terminal and be hard to read. Instead extra functionality has been added to the conversational mode to allow saving of messages and dumping of whole message history to txt and json files respectively.
 - Terminal arguments to allow adjusted output parameters
     - E.g. -v verbose (unlimited length) return
     - Pre tuned context prompts e.g. "Do not explain"
