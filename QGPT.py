@@ -4,6 +4,7 @@ import argparse
 import json
 import sys
 import os
+import getpass
 
 
 def config_load():
@@ -12,11 +13,12 @@ def config_load():
 
     # Should only be false for first start of program, may add functionality to set to false and clear stored key if a 'bad key' response is returned from the API call
     if not os.path.isfile("./api-key.yml"):
-        option = input("Enter API Key (Found in OpenAI account settings): ")
+        print("API Key not detected, enter it now. (Found in OpenAI account settings)")
+        print("Your input will be masked.")
+        option = getpass.getpass(prompt="> ")
         print(
-            "API key has been stored in newly created api-key.yml file, this file is included in .gitignore to not accidentally be uploaded along with your API Key"
+            "API key has been stored in newly created api-key.yml file, this file is included in .gitignore"
         )
-
         with open("api-key.yml", "w") as file:
             key = {"api-key": option}
             yaml.dump(key, file)
