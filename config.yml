@@ -1,4 +1,3 @@
-api-key: false
 model: gpt-3.5-turbo
 quick_context: You give concise, short answers to questions in ideally no more than
   30 words, unless instructed to expand on your answer.

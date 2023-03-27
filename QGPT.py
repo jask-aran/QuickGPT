@@ -11,7 +11,7 @@ def config_load():
         config = yaml.load(file, Loader=yaml.FullLoader)
 
     # Should only be false for first start of program, may add functionality to set to false and clear stored key if a 'bad key' response is returned from the API call
-    if config["api-key"] == False:
+    if not os.path.isfile("./api-key.yml"):
         option = input("Enter API Key (Found in OpenAI account settings): ")
         print(
             "API key has been stored in newly created api-key.yml file, this file is included in .gitignore to not accidentally be uploaded along with your API Key"
@@ -20,12 +20,6 @@ def config_load():
         with open("api-key.yml", "w") as file:
             key = {"api-key": option}
             yaml.dump(key, file)
-
-        config["api-key"] = True
-
-        with open("config.yml", "w") as file:
-            yaml.dump(config, file)
-        sys.exit(0)
 
     # The config dictionary is updated at runtime to include the api-key that has been pulled from the api-key.yml file, before being passed on to the rest of the program
     with open("api-key.yml", "r") as file:
