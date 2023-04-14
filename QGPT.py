@@ -111,7 +111,9 @@ def conversation(config, messages):
     print('Conversational Mode. Enter "/q" to exit.')
     output = get_completion(config, messages)
     messages.append(output)
+
     print(output["content"])
+
     prompt = input("> ")
     while True:
         if prompt == "/q":
